@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>挂号界面</title>
+</head>
+
+<body>
+
+<style type="text/css">
+*{margin:0;padding:0;list-style-type:none;}
+
+.formbox{text-align:center;width:980px;margin:0 auto;height:351px;margin-top:50px;background-image:url('/static/images/bg.jpg');background-repeat:no-repeat;border-top:1px solid black;border-bottom:1px solid black;}
+.formbox .con{text-align:center;height:340px;width:304px;float:right;border:1px solid black}
+.coolbg{
+	font-size:18px;
+	line-height:30px;
+	background-color:rgb(10,114,189);
+	border:1px solid #bdc5ca;
+	height:45px;
+	width:100%;
+	color:rgb(255,255,255);
+	margin:0 auto;
+}
+td{padding:7px 10px;text-align:right;}
+</style>
+
+<script language="javascript" type="text/javascript">
+function cheackbook(){
+	var form=document.form_book;
+
+	if (form.name.value.replace(/ /g,"")==""){
+		alert("姓名不能为空，请重新填写");
+		form.name.focus();
+		return false;
+	}else if (form.name.value.replace(/ /g,"").length<2){
+		alert("姓名字数太短了，请填写真实姓名");
+		form.name.focus();
+		return false;
+	}else if (form.name.value.replace(/ /g,"").length>10){
+		alert("姓名字数太长了，请填写真实姓名");
+		form.name.focus();
+		return false;
+	}
+	if (form.age.value.replace(/ /g,"")==""){
+		alert("请填写预约年龄！");
+		form.age.focus();
+		return false;
+	}	
+
+	if (form.dushu.value.replace(/ /g,"")==""){
+		alert("请填写预约者近视度数！");
+		form.dushu.focus();
+		return false;
+	}		
+	if (form.dianhua.value.replace(/ /g,"")==""){
+		alert("联系电话不能为空");
+		form.dianhua.focus();
+		return false;
+	}
+	if (isNaN(form.dianhua.value)){
+		alert("联系电话必须为数字");
+		form.dianhua.focus();
+		return false;
+	}
+	if (form.dianhua.value.replace(/ /g,"").length != "" & form.dianhua.value.replace(/ /g,"").length<8){
+		alert("联系电话是否填写完整");
+		form.dianhua.focus();
+		return false;
+	}
+	if (form.dianhua.value.replace(/ /g,"").length>11){
+		alert("请填写11位以内的电话号码");
+		form.dianhua.focus();
+		return false;
+	}
+}
+</script>
+
+<div class="formbox">
+        
+	<div class="con">
+		<img src="/static/images/yy_top.jpg">
+		<form action="/pat_login/" method="post"  name="form_book" onSubmit="return cheackbook();" enctype="multipart/form-data">
+			{% csrf_token %}
+			<table width="101%" cellpadding="0" cellspacing="1" style="width:100%;">
+				<tr>
+					<td width="60px">姓&nbsp;&nbsp;名</td>
+					<td ><input type='text' name='name' id='name' style="width:95%; border:1px  solid rgb(191, 209, 245); padding:4px; font-size:14px;"  class='intxt' value='' />
+					</td>
+				</tr>
+				<tr>
+					<td>身份证</td>
+					<td style="text-align:left;"><input type='text' name='id' id='age'  style="width:95%;  border:1px  solid rgb(191, 209, 245); padding:4px; font-size:14px;"  class='intxt' value='' />
+				</tr>
+				<br>
+				<br>
+				<tr>
+					<td>电&nbsp;&nbsp;话</td>
+					<td><input type='text' name='phone' id='dianhua' style="width:95%; border:1px  solid rgb(191, 209, 245); padding:4px; font-size:14px;"  class='intxt' value='' />
+					</td>
+				</tr>
+				<tr>
+					<td>科&nbsp;&nbsp;室</td>
+					<td style="text-align:left;"><select name='client_num'   style="width:95%; border:1px  solid rgb(191, 209, 245); padding:4px; font-size:14px;">
+					<option value=1>内科</option>
+                    <option value=2>五官科</option>
+                    <option value=3>神经科</option>
+                    <option value=4>骨科</option>
+                    <option value=5>分泌科</option>
+                    <option value=6>外科</option>
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td align="right" valign="top"></td>
+					<td><input type='hidden' name='mytime' id='mytime' style='width:0px'  class='intxt' value='value' />
+					<script type="text/javascript">
+					
+					window.onload = function(){
+					
+					var nowDate = new Date();
+					
+					var str = nowDate.getFullYear()+"-"+(nowDate.getMonth() + 1)+"-"+nowDate.getDate()+" "+nowDate.getHours()+":"+nowDate.getMinutes()+":"+nowDate.getSeconds();
+					
+					document.getElementById("mytime").value=str;
+					
+					}
+					</script>
+					</td>
+				</tr>
+				<tr>
+					<td align="right" valign="top"></td>
+					<td><input type='hidden' name='laiyuan' id='laiyuan' style='width:250px'  class='intxt' value='http://www.eye0851.com/zhuanti/aieronly_pc_zhuanti' />
+					</td>
+				</tr>
+				</table>
+				<input type="submit" name="submit" value="一键预约" class='coolbg'  style="cursor:pointer" />&nbsp;
+		</form>
+	</div>
+</div>
+
+</body>
+</html>

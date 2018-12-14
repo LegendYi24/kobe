@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+        <meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title>医生登录</title>
+		<link rel="stylesheet" href="/static/style12/css.css" />
+	</head>
+	<body style="background:#3583d8;">
+		<div class="bg_bank">
+                  <a class="re_bank" href="###"></a>
+		  <div class="re_min_infor">
+			    <div class="re_logo" ></div>
+                 <SCRIPT language="javascript">
+
+
+            function checkform(){
+	            if(document.forma.gh_name.value==''){
+            		alert('请填写姓名!!');
+            		document.forma.gh_name.focus();
+            		return false;
+            	}
+				if(document.forma.gh_tel.value==''){
+            		alert('请填写手机!!');
+            		document.forma.gh_tel.focus();
+            		return false;
+            	}
+				if(document.forma.gh_ask.value=='1'){
+            		alert('请选择诊疗项目!!');
+            		document.forma.gh_ask.focus();
+            		return false;
+            	}
+
+				
+			    
+		     }
+            </SCRIPT>
+
+                 <form action="/doc_login/" enctype="multipart/form-data" method="post" autocomplete="off">
+						{% csrf_token %}
+
+			    <div class="bg_color">
+                    <div class="re_min">
+                        <span class="icon_phone"></span>
+                        <input class="input01"  type='text' name='account' id='gh_name' placeholder="账号" />
+                    </div>
+                    <div class="re_min">
+                        <span class="icon_passwarde"></span>
+                        <input class="input01" type='password' name='pwd' id='gh_tel'  placeholder="密码" /><div id="div1"></div>
+                        <span class="the_eyes"></span>
+                    </div>
+                                
+                </div>
+                     <div class="re_regist">
+                         <input class="btn_regist" type="submit" name="submit" value="提 交" />
+                     </div>
+                     <div class="re_regist02">
+                         <a href="/" target="_blank" style="color:#FFF;">返回首页</a> | <a href="#" target="_blank" style="color:#FFF;">在线咨询</a>
+                     </div>
+            </form>
+		</div>
+		
+		<script type="text/javascript" src="/static/js12/jquery-1.11.3.min.js" ></script>
+		<script type="text/javascript" src="/static/js12/index.js" ></script>
+	</body>
+</html>
