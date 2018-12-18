@@ -1,0 +1,247 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-商品列表</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+</head>
+<body>
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎 <a href="" style="color: red">[{{ request.session.currentUser }}]</a>来到天天生鲜!</div>
+			<div class="fr">
+					{% if request.session.currentUser|default:'' != '' %}
+					<div class="login_state"><span>欢迎您：</span>
+						<a href="/user/user_center/">{{ request.session.currentUser }}</a>
+                    	<a href="{%url 'user:logout'%}">退出</a></div>
+                    {% else %}
+                    <div  class="login_in">
+						<a href="{%url 'user:login'%}">登录</a><span>|</span>
+                    	<a href="{%url 'user:register'%}">注册</a></div>
+					{% endif %}
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="{%url 'user:user_center_info'%}">用户中心</a>
+					<span>|</span>
+					<a href="/cart/cart/">我的购物车</a>
+					<span>|</span>
+					<a href="{%url 'user:user_center_order'%}">我的订单</a>
+
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="/user/index/" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="search_con fl">
+			<form action="/goods/find/" method="get">
+			<input type="text" class="input_text fl" name="keyword"
+				   {% if keyword %} value="{{ keyword }}" {% else %} placeholder="搜索商品" {% endif %}>
+			<input type="submit" class="input_btn fr" name="" value="搜索">
+			</form>
+		</div>
+		<div class="guest_cart fr">
+			<a href="/cart/cart/" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl"></div>
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>
+				<span></span>
+				<ul class="subnav">
+					<li><a href="/goods/list/6/1/1/" class="fruit">新鲜水果</a></li>
+					<li><a href="/goods/list/1/1/1/" class="seafood">海鲜水产</a></li>
+					<li><a href="/goods/list/2/1/1/" class="meet">猪牛羊肉</a></li>
+					<li><a href="/goods/list/3/1/1/" class="egg">禽类蛋品</a></li>
+					<li><a href="/goods/list/4/1/1/" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/goods/list/5/1/1/" class="ice">速冻食品</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="/goods/index/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>></span>
+		<a href="#">{{typeinfo}}</a>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					<li>
+					{%for new in news%}
+					<li><a href="/goods/{{new.id}}/"><img src="/static/media/{{new.gpic}}" alt=""></a></li>
+					<h4><a href="/{{new.id}}/">{{new.gtitle}}</a></h4>
+					<div class="prize">￥{{new.gprice}}</div>
+					{%endfor%}
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="/goods/find/?sort=1&keyword={{keyword}}" {% if sort == "1" %} class="active"{%endif%}>默认</a>
+				<a href="/goods/find/?sort=2&keyword={{keyword}}" {% if sort == "2" %} class="active"{%endif%}>价格</a>
+				<a href="/goods/find/?sort=3&keyword={{keyword}}" {% if sort == "3" %} class="active"{%endif%}>人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+				{%for g in page%}
+				<li>
+					<a href="/goods/{{g.id}}"><img src="/static/media/{{g.gpic}}"></a>
+					  <div id="big-box"><img src="/static/media/{{g.gpic}}"/></div>
+					<h4><a href="/{{g.id}}">{{g.gtitle}}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{g.gprice}}</span>
+						<span class="unit">{{g.gunit}}</span>
+						<a href="/cart/add/{{g.id}}/1/" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+				{%endfor%}
+			</ul>
+
+						<div class="pagenation">
+				{%if page.has_previous%}
+					<a href="/goods/list/{{typeinfo.id}}/{{page.previous_page_number}}/{{sort}}/"><上一页</a>
+				{%endif%}
+
+				{%for pindex in paginator.page_range%}
+					{%if pindex == page.number%}
+						<a href="#" class="active" onclick=" return false" >{{pindex}}</a>
+					{%else%}
+						<a href="/goods/list/{{typeinfo.id}}/{{sort}}/{{pindex}}/">{{pindex}}</a>
+					{%endif%}
+				{%endfor%}
+				{%if page.has_next%}
+					<a href="/goods/list/{{typeinfo.id}}/{{sort}}/{{page.next_page_number}}/">下一页></a>
+				{%endif%}
+
+
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	
+</body>
+<style>
+	  #big-box {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 460px;
+            width: 400px;
+            height: 300px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            z-index: 1;;
+        }
+
+        #big-box img {
+            position: absolute;
+            z-index: 5
+        }
+</style>
+<script type="text/javascript">
+	window.onload = function () {
+    var objDemo = document.getElementById("demo");
+    var objSmallBox = document.getElementById("small-box");
+    var objMark = document.getElementById("mark");
+    var objFloatBox = document.getElementById("float-box");
+    var objBigBox = document.getElementById("big-box");
+    var objBigBoxImage = objBigBox.getElementsByTagName("img")[0];
+
+    /**
+     * 当鼠标放到小图片上时，图片和放大镜开始进行显示
+     */
+    objMark.onmouseover = function () {
+        objFloatBox.style.display = "block";
+        objBigBox.style.display = "block";
+    };
+
+    /**
+     * 鼠标移出时，就会触发响应的事件，然后放大镜和图片不再显示
+     */
+    objMark.onmouseout = function () {
+        objFloatBox.style.display = "none";
+        objBigBox.style.display = "none";
+    };
+
+    /**
+     * 鼠标滑过的时候，对相关的放大的倍数进行计算后对图片进行输出
+     */
+    objMark.onmousemove = function (ev) {
+
+        var _event = ev || window.event;  //兼容多个浏览器的event参数模式
+
+        /**
+         * 这里的clientX是指鼠标在浏览器中的绝对坐标位置，也就是计算网页中图片的位置。然后进行绝对化的图片显示的过程
+         */
+        var left = _event.clientX - objDemo.offsetLeft - objSmallBox.offsetLeft - objFloatBox.offsetWidth / 2;
+        var top = _event.clientY - objDemo.offsetTop - objSmallBox.offsetTop - objFloatBox.offsetHeight / 2;
+
+        /**
+         * 此段代码是为了对放大镜区域移出mark标记块的时候的处理。
+         * 实现的功能是：放大镜区域只会存在与mark的标记块内部
+         */
+        if (left < 0) {
+            left = 0;
+        } else if (left > (objMark.offsetWidth - objFloatBox.offsetWidth)) {
+            left = objMark.offsetWidth - objFloatBox.offsetWidth;
+        }
+
+        if (top < 0) {
+            top = 0;
+        } else if (top > (objMark.offsetHeight - objFloatBox.offsetHeight)) {
+            top = objMark.offsetHeight - objFloatBox.offsetHeight;
+
+        }
+
+        /**
+         * 设置放大镜出现的位置
+         */
+        objFloatBox.style.left = left + "px";   //oSmall.offsetLeft的值是相对什么而言
+        objFloatBox.style.top = top + "px";
+
+        var percentX = left / (objMark.offsetWidth - objFloatBox.offsetWidth);
+        var percentY = top / (objMark.offsetHeight - objFloatBox.offsetHeight);
+
+        /**
+         * 这里有亮点需要进行注意：
+         * 1.注意负号，因为大图的显示的方向与放大镜的移动方向是相反的
+         * 2.注意相乘的比例值的计算
+         */
+        objBigBoxImage.style.left = -percentX * (objBigBoxImage.offsetWidth - objBigBox.offsetWidth) + "px";
+        objBigBoxImage.style.top = -percentY * (objBigBoxImage.offsetHeight - objBigBox.offsetHeight) + "px";
+    }
+}
+</script>
+</html>

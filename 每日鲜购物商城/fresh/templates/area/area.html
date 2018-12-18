@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>省市区列表</title>
+  <script type="text/javascript" src="../../static/js/jquery-1.12.4.min.js"></script>
+    <script>
+        $(function () {
+            //获取所有省份
+            $.get('/area/province/', function (dic) {
+                pro = $('#pro')
+                $.each(dic.data, function (index, item) {
+                    pro.append('<option value=' + item[0] + '>' + item[1] + '</option>');
+                })
+            })
+            //获取市信息
+            $('#pro').change(function () {
+                $.get('/area/city_' + $(this).val() + '/', function (dict) {
+                    city = $('#city');
+                    city.empty().append('<option value="">请选择市</option>');
+                    $('#county').empty().append('<option value="">请选择区县</option>');
+                    $.each(dict.data, function (index, item) {
+                        city.append('<option value=' + item[0] + '>' + item[1] + '</option>');
+                    })
+                });
+            });
+
+            //获取区县信息
+            $('#city').change(function () {
+                $.get('/area/county_' + $(this).val() + '/', function (dict) {
+                    county = $('#county');
+                    county.empty().append('<option value="">请选择区县</option>');
+                    $.each(dict.data, function (index, item) {
+                        county.append('<option value=' + item[0]+ '>' + item[1] + '</option>');
+                    })
+                })
+            });
+        })
+
+    </script>
+</head>
+<body>
+<select id="pro">
+    <option value="">请选择省</option>
+</select>
+<select id="city">
+    <option value="">请选择市</option>
+</select>
+<select id="county">
+    <option value="">请选择区县</option>
+</select>
+<input type="submit" value="提交">
+</body>
+</html>

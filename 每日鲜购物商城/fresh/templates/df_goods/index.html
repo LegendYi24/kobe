@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>微米购</title>
+	<link rel="stylesheet" type="text/css" href="../../static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="../../static/css/main.css">
+	<script type="text/javascript" src="../../static/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="../../static/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../static/js/slide.js"></script>
+</head>
+<body>
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎 <a href="" style="color: red">[{{ request.session.currentUser }}]</a>来到天天生鲜!</div>
+			<div class="fr">
+				{% if request.session.currentUser|default:'' != '' %}
+					<div class="login_state"><span>欢迎您：</span>
+						<a href="/user/user_center/">{{ request.session.currentUser }}</a>
+                    	<a href="{%url 'user:logout'%}">退出</a></div>
+                    {% else %}
+                    <div  class="login_in">
+						<a href="{%url 'user:login'%}">登录</a><span>|</span>
+                    	<a href="{%url 'user:register'%}">注册</a></div>
+					{% endif %}
+				<div  id="d1" class="user_link fl">
+					<a href="/user/info/">用户中心</a>
+					<span>|</span>
+					<a href="/cart/cart/">我的购物车</a>
+					<span>|</span>
+					<a href="/order/show/">我的订单</a>
+				</div>
+		</div>		
+	</div>
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="../../static/images/logo.png"></a>
+		<div class="search_con fl">
+			<form action="/goods/find/" method="get">
+			<input type="text" class="input_text fl" name="keyword" {%if keyword%}value="{{keyword}}"{%else%} placeholder="搜索商品"{%endif%}>
+			<input type="submit" class="input_btn fr" name="" value="搜索">
+			</form>
+		</div>
+		<div class="guest_cart fr">
+			<a href="/cart/cart/" class="cart_name fl">我的购物车</a>
+			{% if cart_count%}
+			<div class="goods_count fl" id="show_count">{{cart_count}}</div>
+			{%else%}
+
+			{%endif%}
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar">
+			<h1 class="fl">全部商品分类</h1>
+			<ul class="navlist fl">
+				<li><a href="">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">服装城</a></li>
+				<li class="interval">|</li>
+				<li><a href="">食品</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="center_con clearfix">
+		<ul class="subnav fl">
+			{{good_list}}
+			<li><a href="#model01" class="fruit">服装饰品</a></li>
+			<li><a href="#model02" class="seafood">数码产品</a></li>
+			<li><a href="#model03" class="meet">图书音像</a></li>
+			<li><a href="#model04" class="egg">腕表/珠宝饰品</a></li>
+			<li><a href="#model05" class="vegetables"></a></li>
+			<li><a href="#model06" class="ice">速冻食品</a></li>
+
+		</ul>
+		<div class="slide fl">
+			<ul class="slide_pics">
+				<li><img src="../../static/images/banner_01.jpg" alt="幻灯片"></li>
+				<li><img src="../../static/images/banner_02.jpg" alt="幻灯片"></li>
+				<li><img src="../../static/images/banner_03.jpg" alt="幻灯片"></li>
+				<li><img src="../../static/images/banner_04.jpg" alt="幻灯片"></li>
+			</ul>
+			<div class="prev"></div>
+			<div class="next"></div>
+			<ul class="points"></ul>
+		</div>
+		<div class="adv fl">
+			<a href="#"><img src="../../static/images/adv01.jpg"></a>
+			<a href="#"><img src="../../static/images/adv02.jpg"></a>
+		</div>
+	</div>
+
+	<div class="list_model">
+		<div class="list_title clearfix">
+			<h3 class="fl" id="model01">新鲜水果</h3>
+			<div class="subtitle fl">
+				<span>|</span>
+				{% for g in type5 %}
+                <a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a>
+                {% endfor %}
+			</div>
+			<a href="/goods/list/6/1/1/" class="goods_more fr" id="fruit_more">查看更多 ></a>
+		</div>
+
+		<div class="goods_con clearfix">
+			<div class="goods_banner fl"><img src="../../static/images/banner01.jpg"></div>
+			<ul class="goods_list fl">
+				{% for g in type51 %}
+                    <li>
+                        <h4><a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a></h4>
+                        <a href="/goods/{{ g.id }}/"><img src="/static/media/{{ g.gpic }}"/></a>
+                        <div class="prize">￥ {{ g.gprice }}</div>
+                    </li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="list_model">
+		<div class="list_title clearfix">
+			<h3 class="fl" id="model02">海鲜水产</h3>
+			<div class="subtitle fl">
+				<span>|</span>
+				{% for g in type0 %}
+                <a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a>
+                {% endfor %}
+			</div>
+			<a href="/goods/list/1/1/1/" class="goods_more fr">查看更多 ></a>
+		</div>
+
+		<div class="goods_con clearfix">
+			<div class="goods_banner fl"><img src="../../static/images/banner02.jpg"></div>
+			<ul class="goods_list fl">
+				{% for g in type01 %}
+                    <li>
+                        <h4><a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a></h4>
+                        <a href="/goods/{{ g.id }}/"><img src="/static/media/{{ g.gpic }}"/></a>
+                        <div class="prize">￥ {{ g.gprice }}</div>
+                    </li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="list_model">
+		<div class="list_title clearfix">
+			<h3 class="fl" id="model03">猪牛羊肉</h3>
+			<div class="subtitle fl">
+				<span>|</span>
+				{% for g in type1 %}
+                <a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a>
+                {% endfor %}
+			</div>
+			<a href="/goods/list/2/1/1/" class="goods_more fr">查看更多 ></a>
+		</div>
+
+		<div class="goods_con clearfix">
+			<div class="goods_banner fl"><img src="../../static/images/banner03.jpg"></div>
+			<ul class="goods_list fl">
+				{% for g in type11 %}
+                    <li>
+                        <h4><a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a></h4>
+                        <a href="/goods/{{ g.id }}/"><img src="/static/media/{{ g.gpic }}"/></a>
+                        <div class="prize">￥ {{ g.gprice }}</div>
+                    </li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="list_model">
+		<div class="list_title clearfix">
+			<h3 class="fl" id="model04">禽类蛋品</h3>
+			<div class="subtitle fl">
+				<span>|</span>
+				{% for g in type2 %}
+                <a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a>
+                {% endfor %}
+			</div>
+			<a href="/goods/list/3/1/1/" class="goods_more fr">查看更多 ></a>
+		</div>
+
+		<div class="goods_con clearfix">
+			<div class="goods_banner fl"><img src="../../static/images/banner04.jpg"></div>
+			<ul class="goods_list fl">
+				{% for g in type21 %}
+                    <li>
+                        <h4><a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a></h4>
+                        <a href="/goods/{{ g.id }}/"><img src="/static/media/{{ g.gpic }}"/></a>
+                        <div class="prize">￥ {{ g.gprice }}</div>
+                    </li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="list_model">
+		<div class="list_title clearfix">
+			<h3 class="fl" id="model05">新鲜蔬菜</h3>
+			<div class="subtitle fl">
+				<span>|</span>
+				{% for g in type3 %}
+                <a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a>
+                {% endfor %}
+			</div>
+			<a href="/goods/list/4/1/1/" class="goods_more fr">查看更多 ></a>
+		</div>
+
+		<div class="goods_con clearfix">
+			<div class="goods_banner fl"><img src="../../static/images/banner05.jpg"></div>
+			<ul class="goods_list fl">
+				{% for g in type31 %}
+                    <li>
+                        <h4><a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a></h4>
+                        <a href="/goods/{{ g.id }}/"><img src="/static/media/{{ g.gpic }}"/></a>
+                        <div class="prize">￥ {{ g.gprice }}</div>
+                    </li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="list_model">
+		<div class="list_title clearfix">
+			<h3 class="fl" id="model06">速冻食品</h3>
+			<div class="subtitle fl">
+				<span>|</span>
+				{% for g in type4 %}
+                <a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a>
+                {% endfor %}
+			</div>
+			<a href="/goods/list/5/1/1/" class="goods_more fr">查看更多 ></a>
+		</div>
+
+		<div class="goods_con clearfix">
+			<div class="goods_banner fl"><img src="../../static/images/banner06.jpg"></div>
+			<ul class="goods_list fl">
+				{% for g in type41 %}
+                    <li>
+                        <h4><a href="/goods/{{ g.id }}/">{{ g.gtitle|slice:'5' }}...</a></h4>
+                        <a href="/goods/{{ g.id }}/"><img src="/static/media/{{ g.gpic }}"/></a>
+                        <div class="prize">￥ {{ g.gprice }}</div>
+                    </li>
+                {% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+		</div>
+	<script type="text/javascript" src="../../static/js/slide.js"></script>
+	<script type="text/javascript">
+		BCSlideshow('focuspic')
+		var oFruit = document.getElementById('fruit_more');
+		var oShownum = document.getElementById('show_count');
+
+		var hasorder = localStorage.getItem('order_finish');
+
+		if(hasorder)
+		{
+			oShownum.innerHTML = '2';
+		}
+
+		oFruit.onclick = function(){
+			window.location.href = 'list.html';
+		}
+	</script>
+</body>
+</html>

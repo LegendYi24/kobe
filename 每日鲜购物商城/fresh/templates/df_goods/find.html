@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-商品列表</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+</head>
+<body>
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎 <a href="" style="color: red">[{{ request.session.currentUser }}]</a>来到天天生鲜!</div>
+			<div class="fr">
+					{% if request.session.currentUser|default:'' != '' %}
+					<div class="login_state"><span>欢迎您：</span>
+						<a href="/user/user_center">{{ request.session.currentUser }}</a>
+                    <a href="{%url 'user:logout'%}">退出</a></div>
+                    {% else %}
+                    <div  class="login_in"><a href="{%url 'user:login'%}">登录</a><span>|</span>
+                    <a href="{%url 'user:register'%}">注册</a></div>
+				{% endif %}
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="{%url 'user:user_center_info'%}">用户中心</a>
+					<span>|</span>
+					<a href="/cart/cart/">我的购物车</a>
+					<span>|</span>
+					<a href="{%url 'user:user_center_order'%}">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="search_con fl">
+			<form action="/goods/find/" method="get">
+			<input type="text" class="input_text fl" name="keyword"
+				   {% if keyword %} value="{{ keyword }}" {% else %} placeholder="搜索商品" {% endif %}>
+			<input type="submit" class="input_btn fr" name="" value="搜索">
+			</form>
+		</div>
+		<div class="guest_cart fr">
+			<a href="/cart/cart/" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl">1</div>
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>	
+				<span></span>			
+				<ul class="subnav">
+					<li><a href="/goods/list/6/1/1/" class="fruit">新鲜水果</a></li>
+					<li><a href="/goods/list/1/1/1/" class="seafood">海鲜水产</a></li>
+					<li><a href="/goods/list/2/1/1/" class="meet">猪牛羊肉</a></li>
+					<li><a href="/goods/list/3/1/1/" class="egg">禽类蛋品</a></li>
+					<li><a href="/goods/list/4/1/1/" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="/goods/list/5/1/1/" class="ice">速冻食品</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="/goods/index/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>></span>
+		<a href="#">{{typeinfo}}</a>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					<li>
+					{%for new in news%}
+					<li><a href="/goods/{{new.id}}/"><img src="/static/media/{{new.gpic}}" alt=""></a></li>
+					<h4><a href="/{{new.id}}/">{{new.gtitle}}</a></h4>
+					<div class="prize">￥{{new.gprice}}</div>
+					{%endfor%}
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="/goods/find/?sort=1&keyword={{keyword}}" {% if sort == "1" %} class="active"{%endif%}>默认</a>
+				<a href="/goods/find/?sort=2&keyword={{keyword}}" {% if sort == "2" %} class="active"{%endif%}>价格</a>
+				<a href="/goods/find/?sort=3&keyword={{keyword}}" {% if sort == "3" %} class="active"{%endif%}>人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+				{%for g in page%}
+				<li>
+					<a href="/goods/{{g.id}}"><img src="/static/media/{{g.gpic}}"></a>
+					<h4><a href="/{{g.id}}">{{g.gtitle}}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{g.gprice}}</span>
+						<span class="unit">{{g.gunit}}</span>
+						<a href="/cart/add/{{g.id}}/1/" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+				{%endfor%}
+			</ul>
+
+			<div class="pagenation">
+				{%if page.has_previous%}
+
+				<a href="/find/?sort={{sort}}&keyword={{keyword}}&pindex={{page.next_page_number}}"><上一页</a>
+				{%endif%}
+				{%for pindex in paginator.page_range%}
+					{%if pindex == page.number%}
+						<a href="#" class="active">{{pindex}}</a>
+					{%else%}
+						<a href="/find/?sort={{sort}}&keyword={{keyword}}&pindex={{pindex}}">{{pindex}}</a>
+					{%endif%}
+				{%endfor%}
+				{%if page.has_next%}
+					<a href="/find/?sort={{sort}}&keyword={{keyword}}&pindex={{page.next_page_number}}">下一页></a>
+				{%endif%}
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单支付</title>
+    <script>
+        setTimeout('location.href="/order/show/";',5000);
+    </script>
+</head>
+<body style="background-color:lightgreen">
+    <div style="margin: 20px auto;width: 300px">
+        <table>
+            <tr>
+                <td><span style="color: white;font-size: 20px">订单编号：</span></td>
+                <td><span style="color: white;font-size: 16px">{{ order.oid }}</span></td>
+            </tr>
+            <tr>
+                <td><span style="color: white;font-size: 20px">应付金额：</span></td>
+                <td><span style="color: white;font-size: 16px;font-weight: bold">{{ order.ototal }}</span></td>
+            </tr>
+            <span style="color: #f89c5d;font-size: 9px">为确保您的账户安全，该页面将在付款5s后跳转</span>
+        </table>
+    </div>
+</body>
+</html>

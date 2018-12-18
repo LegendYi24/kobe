@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-商品详情</title>
+
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+
+	<script type="text/javascript">
+		function add() {
+		    num=parseFloat($('.num_show').val());
+		    $('.num_show').val(num+1);
+		    $('.num_show').blur();
+        }
+        function minus() {
+		    num=parseFloat($('.num_show').val());
+		    if(num<=1){
+		        return;
+			}
+			$('.num_show').val(num-1);
+		    $('.num_show').blur();
+
+        }
+         $(function () {
+             $('.num_show').blur(function () {
+                 num = parseInt($('.num_show').val());
+                 if (num<=1 || isNaN(num)) {
+                     num = 1;
+                 }
+                 price = parseFloat($('#gprice').text());
+                 total =num*price
+                 $('.num_show').val(num);
+                 $('#gtotal').text(total.toFixed(2) + "元");
+             });
+        });
+	</script>
+</head>
+<body>
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎 <a href="" style="color: red">[{{ request.session.currentUser }}]</a>来到天天生鲜!</div>
+			<div class="fr">
+					{% if request.session.currentUser|default:'' != '' %}
+					<div class="login_state"><span>欢迎您：</span>
+						<a href="/user/user_center">{{ request.session.currentUser }}</a>
+                    <a href="{%url 'user:logout'%}">退出</a></div>
+                    {% else %}
+                    <div  class="login_in"><a href="{%url 'user:login'%}">登录</a><span>|</span>
+                    <a href="{%url 'user:register'%}">注册</a></div>
+				{% endif %}
+				<div class="user_link fl">
+					<a href="">{{ request.session.currentUser }}</a>
+					<span>|</span>
+					<a href="{%url 'user:logout'%}">退出</a>
+					<span>|</span>
+					<a href="{%url 'user:user_center_info'%}">用户中心</a>
+					<span>|</span>
+					<a href="/cart/cart/">我的购物车</a>
+					<span>|</span>
+					<a href="{%url 'user:user_center_order'%}">我的订单</a>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="/goods/index/" class="logo fl"><img src="../../static/images/logo.png"></a>
+		<div class="search_con fl">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>
+		<div class="guest_cart fr">
+			<a href="/cart/cart/" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">{{cart_count}}</div>
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>	
+				<span></span>			
+				<ul class="subnav">
+					<li><a href="#" class="fruit">新鲜水果</a></li>
+					<li><a href="#" class="seafood">海鲜水产</a></li>
+					<li><a href="#" class="meet">猪牛羊肉</a></li>
+					<li><a href="#" class="egg">禽类蛋品</a></li>
+					<li><a href="#" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="#" class="ice">速冻食品</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="/goods/index/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		全部分类>{{title}}
+		{%if id|default:'' != ''%}
+		>商品详情
+		{%endif%}
+	</div>
+
+	<div class="goods_detail_con clearfix">
+		<div class="goods_detail_pic fl"><img src="/static/media/{{g.gpic}}" alt=""></div>
+
+		<div class="goods_detail_list fr">
+			<h3>{{g.gtitle}}</h3>
+			<p>{{g.gintroduction}}</p>
+			<div class="prize_bar">
+				<span class="show_pirze" >¥<em id="gprice">{{g.gprice}}</em></span>
+				<span class="show_unit" >单  位：{{g.gunit}}</span>
+			</div>
+			<div class="goods_num clearfix">
+				<div class="num_name fl" >数 量：</div>
+				<div class="num_add fl">
+					<input type="text" class="num_show fl" value="1">
+					<a href="javascript:add();" class="add fr">+</a>
+					<a href="javascript:;minus();" class="minus fr">-</a>
+				</div> 
+			</div>
+			<div class="total">总价：<em id="gtotal">{{g.gprice}}元</em></div>
+			<div class="operate_btn">
+				<a href="javascript:;" class="buy_btn" id="buy_btn">立即购买</a>
+				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
+			</div>
+		</div>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					{%for new in news%}
+					<li><a href="/goods/{{new.id}}/"><img src="/static/media/{{new.gpic}}" alt=""></a></li>
+					<h4><a href="/{{new.id}}/">{{new.gtitle}}</a></h4>
+					<div class="prize">￥{{new.gprice}}</div>
+					{%endfor%}
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<ul class="detail_tab clearfix">
+				<li class="active">商品介绍</li>
+				<li>评论</li>
+			</ul>
+
+			<div class="tab_content">
+				<dl>
+					<dt>商品详情：</dt>
+					<dd>{%autoescape off %}
+						{{g.gcontect}}
+						{%endautoescape%}
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+
+</div>
+	<div class="add_jump"></div>
+	<script type="text/javascript">
+		var $add_x = $('#add_cart').offset().top;
+		var $add_y = $('#add_cart').offset().left;
+
+		var $to_x = $('#show_count').offset().top;
+		var $to_y = $('#show_count').offset().left;
+
+		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
+		$('#add_cart').click(function(){
+		    if($('.login_btn').text().indexOf('登录')>=0){
+		        alret('请先登录');
+		        location.href='/user/login/'
+				return;
+			}
+			$(".add_jump").stop().animate({
+				'left': $to_y+7,
+				'top': $to_x+7},
+				"fast",
+				function() {
+                    $(".add_jump").fadeOut('fast', function () {
+                        $('.add_jump').css({'left': $add_y + 80, 'top': $add_x + 10, 'display': 'block'});
+                    });
+                }
+			);
+
+			num=parseInt($('.num_show').val());
+			$.get('/cart/add/{{g.id}}/'+num+'/',function(data){
+			    $('#show_count').text(data.count);
+			});
+		});
+		$('#buy_btn').click(function(){
+			$.get('/cart/add/{{g.id}}/'+1+'/',function(data){
+			    $('#show_count').text(data.count);
+			});
+		});
+	</script>
+	
+</body>
+</html>
