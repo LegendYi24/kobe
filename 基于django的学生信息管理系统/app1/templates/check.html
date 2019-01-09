@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询</title>
+</head><div style="text-align: center">
+ <h1>输入学生姓名查询</h1>
+             <form method="post">
+
+                  <tr>
+                  <td><label for="name">姓名：</label></td>
+                  <td> <input type="text" id="name" name="name" placeholder="输入学生姓名"/></td>
+                  </tr>
+                 <tr>
+                  <th> <input type="submit" value="查询"></th><br/><br/>
+                 <th> <a href="http://127.0.0.1:8000/app1/url_hello">返回主页面</a></th>
+
+<ul>
+        {% for student in studentlist %}
+            <li><a href="{% url 'url_studentinfo'  student.id  %}">{{ student.Name }}</a></li>
+        {% endfor %}
+ </ul>             </form>
+</div>
+ </table>
+</body>
+</html>
